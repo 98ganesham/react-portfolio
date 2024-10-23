@@ -8,10 +8,6 @@ import PaddingBox from "../assets/frame/paddingBox";
 import { useState } from "react";
 import { phoneRegex } from "../utils/validator";
 
-// Create motion variants for smooth and random effects
-const MotionText = motion.create(Text);
-
-
 // Schema using Zod
 const Schema = z.object({
   name: z
@@ -79,41 +75,27 @@ const Contact = () => {
         <Box justifyContent="center" marginTop={4} alignItems="center">
           <Box textAlign={"center"}
           fontSize={["18px", "20px", "22px"]}>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <MotionText
+            
+              <Text
                 
                 animate={{
                   x: [0, 5, 0, -5, 0], // Random movement in x-axis
                 }}
-                transition={{
-                  duration: 2,
-                  ease: "easeInOut",
-                  repeat: Infinity,
-                }}
+                
               >
                 I'm passionate about helping people develop their websites and bringing their ideas to life. <br /> Let's collaborate and create something amazing together!
-              </MotionText>
-              <MotionText
+              </Text>
+              <Text
                 fontSize={["14px", "16px", "18px"]}
-                animate={{
-                  x: [0, 5, 0, -5, 0],
-                }}
-                transition={{
-                  duration: 2,
-                  ease: "easeInOut",
-                  repeat: Infinity,
-                }}
+                
+               
               >
                 Send me your request for a proposal, and I'll get back to you with a detailed estimate.
-              </MotionText>
-            </motion.div>
-            <Box as="form" onSubmit={handleSubmit(onSubmit)} mt={8} width="100%">
+              </Text>
+           
+            <Box as="form" onSubmit={handleSubmit(onSubmit)} mt={8} maxWidth="100%">
               {/* Form inputs */}
-              <FormControl isInvalid={errors.name ? true : false} marginBottom={5}>
+              <FormControl isInvalid={errors.name ? true : false} marginBottom={5} color="white">
                 <Input id="name" placeholder="Your Name*" {...register("name")} />
                 <FormErrorMessage>{errors.name && errors.name.message}</FormErrorMessage>
               </FormControl>

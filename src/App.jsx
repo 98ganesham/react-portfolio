@@ -13,9 +13,9 @@ function App (){
 <Box>
     <NavBar />
     <Routes >
-        <Route path='/' element={<About/>} />
+        <Route path='/' element={<Experience />} />
         <Route path='/education' element={<Education/>} />
-        <Route path='/experience' element={<Experience />} />
+        <Route path='/about' element={<About/>} />
         <Route path='/contact' element={<Contact/>}/>
         
     </Routes>
