@@ -37,7 +37,7 @@ return (
         </Text>
         <Button
         as="a"
-        href="/Chaw Be Lar-CV_2.pdf"
+        href="/Chaw Be Lar-Computer_CV.pdf"
         download
         maxWidth="fit-content"
         size="lg"

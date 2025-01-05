@@ -1,12 +1,11 @@
-import { Box, Flex, Heading, Divider, FormControl, Input, FormErrorMessage, Button, Textarea,Text } from "@chakra-ui/react";
-import { motion } from "framer-motion";
+import { Box, Flex, Heading, FormControl, Input, FormErrorMessage, Button, Textarea, Text } from "@chakra-ui/react";
 import { z } from "zod";
-import emailjs from "emailjs-com"
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import PaddingBox from "../assets/frame/paddingBox";
 import { useState } from "react";
 import { phoneRegex } from "../utils/validator";
+import sendMail from "../utils/mailer";
 
 // Schema using Zod
 const Schema = z.object({
@@ -21,13 +20,11 @@ const Schema = z.object({
     .regex(phoneRegex, "Please enter a valid phone number."),
   description: z
     .string({ invalid_type_error: "Description is required." })
-    .min(10, {
-      message: "Description must be at least 50 characters.",
-    }),
+    .min(10, { message: "Description must be at least 10 characters." }),
 });
 
 const Contact = () => {
-  // Fix useForm by using Zod's inference for the form data
+  // Use Zod's inference for the form data
   const {
     register,
     handleSubmit,
@@ -37,23 +34,24 @@ const Contact = () => {
     resolver: zodResolver(Schema),
   });
 
-  let [load, setLoad] = useState(false);
-  let [alert, setAlert] = useState(undefined);
+  const [load, setLoad] = useState(false);
+  const [alert, setAlert] = useState(undefined);
 
   const onSubmit = (data) => {
-   setLoad(true);
-   emailjs.send("service_4y7xgpa", "template_0b2cqye",data, "MzvgoATP6eWYUksbP")
-   .then((res)=>{
-    console.log("Email sent Successfully: Thank you for your feedback!", res.status, res.text);
-    setAlert("Success");
-    reset();
+    setLoad(true);
 
-   },(error)=>{
-    setAlert("Error")
-   })
-   .finally(()=>{
-    setLoad(false);
-   });
+    // Send the form data using the sendMail function
+    sendMail(data).then(
+      (response) => {
+        setAlert("success");
+        setLoad(false);
+        reset();
+      },
+      (err) => {
+        setAlert("error");
+        setLoad(false);
+      }
+    );
   };
 
   return (
@@ -73,38 +71,33 @@ const Contact = () => {
         </Heading>
         <Box borderBottom="2px" pt={2} width="25%" borderColor="red.500" />
         <Box justifyContent="center" marginTop={4} alignItems="center">
-          <Box textAlign={"center"}
-          fontSize={["18px", "20px", "22px"]}>
-            
-              <Text
-                
-                animate={{
-                  x: [0, 5, 0, -5, 0], // Random movement in x-axis
-                }}
-                
-              >
-                I'm passionate about helping people develop their websites and bringing their ideas to life. <br /> Let's collaborate and create something amazing together!
-              </Text>
-              <Text
-                fontSize={["14px", "16px", "18px"]}
-                
-               
-              >
-                Send me your request for a proposal, and I'll get back to you with a detailed estimate.
-              </Text>
-           
+          <Box textAlign={"center"} fontSize={["18px", "20px", "22px"]}>
+            <Text
+              animate={{
+                x: [0, 5, 0, -5, 0], // Random movement in x-axis
+              }}
+            >
+              I'm passionate about helping people develop their websites and bringing their ideas to life. <br /> Let's collaborate and create something amazing together!
+            </Text>
+            <Text fontSize={["14px", "16px", "18px"]}>
+              Send me your request for a proposal, and I'll get back to you with a detailed estimate.
+            </Text>
+
+            {/* Form */}
             <Box as="form" onSubmit={handleSubmit(onSubmit)} mt={8} maxWidth="100%">
-              {/* Form inputs */}
-              <FormControl isInvalid={errors.name ? true : false} marginBottom={5} color="white">
+              {/* Name Field */}
+              <FormControl isInvalid={errors.name ? true : false} marginBottom={5}>
                 <Input id="name" placeholder="Your Name*" {...register("name")} />
                 <FormErrorMessage>{errors.name && errors.name.message}</FormErrorMessage>
               </FormControl>
 
+              {/* Email Field */}
               <FormControl isInvalid={errors.email ? true : false} marginY={5}>
                 <Input id="email" placeholder="Email*" {...register("email")} />
                 <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
               </FormControl>
 
+              {/* Phone Field */}
               <FormControl isInvalid={errors.phone ? true : false} marginY={5}>
                 <Input
                   id="phone"
@@ -119,18 +112,26 @@ const Contact = () => {
                 <FormErrorMessage>{errors.phone && errors.phone.message}</FormErrorMessage>
               </FormControl>
 
+              {/* Description Field */}
               <FormControl isInvalid={errors.description ? true : false} marginY={5}>
                 <Textarea id="description" placeholder="Description*" {...register("description")} />
                 <FormErrorMessage>{errors.description && errors.description.message}</FormErrorMessage>
               </FormControl>
 
-              <Button  background="red.400" color="white" marginY={2} type="submit" isLoading={load} _hover={{backgroundColor:"red.700"}} loadingText="Sending">
+              {/* Submit Button */}
+              <Button
+                background="red.400"
+                color="white"
+                marginY={2}
+                type="submit"
+                isLoading={load}
+                _hover={{ backgroundColor: "red.700" }}
+                loadingText="Sending"
+              >
                 Send
               </Button>
             </Box>
           </Box>
-
-         
         </Box>
       </Flex>
     </PaddingBox>
