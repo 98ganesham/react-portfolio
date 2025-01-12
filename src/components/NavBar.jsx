@@ -30,8 +30,10 @@ const NavBar = () => {
     handler: () => setIsOpen(false), // Close menu when clicking outside
   });
 
+  const gradientLight = "linear(to-r, #ff7f50, #ff6347)"
+  const gradientDark = "linear(to-r, #4b0082, #800080)"
   // Define signature color based on the color mode
-  const signatureColor = useColorModeValue('black', 'green.200'); // Black for light mode, green.200 for dark mode
+  const signatureColor = useColorModeValue(gradientLight, gradientDark);
 
   const links = [
     {title: 'Experience', link: '/'},
@@ -42,8 +44,8 @@ const NavBar = () => {
 
   const getlinkColor = (path)=> {
     return location.pathname === path
-      ? '#F56565'
-      : colorMode === 'light' ? 'black' : 'white';
+      ? 'red'
+      : colorMode === 'light' ? 'blue' : 'white';
   }
 
   return (
@@ -65,7 +67,7 @@ const NavBar = () => {
                 fontFamily="Cursive" // You can load a custom font like this
                 cursor="pointer"
               >
-                Chaw Be Lar
+               Chaw Be Lar
               </Text>
             </Link>
           </Flex> 
@@ -112,9 +114,9 @@ const NavBar = () => {
                 icon={colorMode === 'light' ? <MdOutlineDarkMode size={20} /> : <MdOutlineLightMode size={20} />}
                 border="none"
                 onClick={toggleColorMode}
-                variant="ghost"
+                variant="solid"
                 size={"md"}
-                _hover={{ bg: 'red.200' }}
+                _hover={{ bg: 'red.400' }}
               />
             </Stack>
 
@@ -144,16 +146,17 @@ const NavBar = () => {
           <Stack
             ref={menuRef} // Assigning reference for outside click detection
             position="absolute"
-            top="60px"
-            right={2}
+            top="65px"
+            right={2.5}
             spacing={4}
             p={2}
             display={{ base: 'flex', md: 'none' }}
             align="center"
             maxHeight="300px"
             overflowY="auto"
-            backgroundColor="rgba(52, 150, 100, 0.6)" // Using RGBA for transparency
-            boxShadow="0 4px 12px rgba(0, 0, 0, 0.3)"
+            
+            backgroundColor='rgba(210,190, 93, 100)' // Using RGBA for transparency
+            boxShadow="0 4px 12px rgba(0, 0, 0, 0.2)"
             borderRadius="5px"
           >
             {links.map((link, idx) => (
@@ -163,7 +166,8 @@ const NavBar = () => {
                 style={{
                   fontSize: 20,
                   textDecoration: 'none',
-                  transition: 'color 0.2s',
+                  fontWeight:"600",
+                  transition: 'color 0.5s',
                   color: getlinkColor(link.link),
                 }}
                 onMouseEnter={(e) => {

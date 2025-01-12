@@ -13,7 +13,7 @@ import PaddingBox from "../assets/frame/paddingBox";
 
 const Experience = () => {
   // Dynamic color and shadow for modern effects
-  const cardBg = useColorModeValue("white", "gray.800");
+  const cardBg = useColorModeValue("white", "gray.600 ");
   const cardShadow = useColorModeValue("lg", "2xl");
 
   return (
@@ -58,7 +58,7 @@ const Experience = () => {
             <Text fontSize="xl" fontWeight="semibold" color={useColorModeValue("gray.600", "whiteAlpha.800")}>
               Programming Languages & Frameworks
             </Text>
-            <HStack spacing={4}>
+            <HStack spacing={4} >
               <Avatar bg="blue.500" icon={<FaReact size="24px" color="white" />} boxSize="70px" />
               <Avatar bg="red.500" icon={<FaLaravel size="24px" color="white" />} boxSize="70px" />
               <Avatar bg="blue.300" icon={<FaPhp size="24px" color="white" />} boxSize="70px" />
